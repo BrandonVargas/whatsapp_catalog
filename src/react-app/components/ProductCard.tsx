@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Package, Leaf, Wheat, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '../types';
@@ -20,6 +20,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const minSwipeDistance = 50;
+
+  // Debounce for add to cart button
+  const isAddingRef = useRef(false);
 
   const isPack = selectedType === 'pack';
   const itemQuantity = getTotalItemQuantity(product.id, isPack);
@@ -50,7 +53,16 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     isPack && product.isPack && product.packSize ? product.price * product.packSize : null;
 
   const handleAddToCart = () => {
+    // Prevent rapid successive clicks
+    if (isAddingRef.current) return;
+
+    isAddingRef.current = true;
     addToCart(product, isPack, isGlutenFree, isSugarFree);
+
+    // Reset debounce after 300ms
+    setTimeout(() => {
+      isAddingRef.current = false;
+    }, 300);
   };
 
   const nextImage = () => {
@@ -135,7 +147,7 @@ const prevImage = () => {
                 </motion.button>
 
                 <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {product.images.map((src, index) => (
+                  {product.images.map((_, index) => (
                     <motion.button
                       key={`dot-${product.id || 'noid'}-${index}`}
                       className={`h-2 rounded-full border-none cursor-pointer p-0 transition-all ${index === selectedImage
