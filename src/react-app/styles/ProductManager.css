@@ -294,3 +294,26 @@
     background: rgba(100, 108, 255, 0.05);
   }
 }
+
+/* Improved mobile modal support */
+@media (max-width: 768px) {
+  .product-modal {
+    width: 95%;
+    max-height: 85vh;
+    padding: 1.5rem 1rem;
+  }
+
+  .image-previews {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+}
+
+/* Ensure modal is scrollable on short screens */
+@media (max-height: 700px) {
+  .product-modal {
+    top: 20px;
+    bottom: 20px;
+    transform: translateX(-50%);
+    max-height: calc(100vh - 40px);
+  }
+}

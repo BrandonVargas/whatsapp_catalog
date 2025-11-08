@@ -11,14 +11,14 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const { addToCart, updateQuantity, getItemQuantity } = useCart();
+  const { cart, addToCart, updateQuantity, getTotalItemQuantity } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedType, setSelectedType] = useState<'unit' | 'pack'>('unit');
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isSugarFree, setIsSugarFree] = useState(false);
 
   const isPack = selectedType === 'pack';
-  const itemQuantity = getItemQuantity(product.id, isPack, isGlutenFree, isSugarFree);
+  const itemQuantity = getTotalItemQuantity(product.id, isPack);
 
   // Calculate display price
   const calculateDisplayPrice = (): number => {
@@ -51,11 +51,25 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   const handleIncrement = () => {
-    updateQuantity(product.id, isPack, isGlutenFree, isSugarFree, itemQuantity + 1);
+    // Add one more with current dietary selection
+    addToCart(product, isPack, isGlutenFree, isSugarFree, 1);
   };
 
   const handleDecrement = () => {
-    updateQuantity(product.id, isPack, isGlutenFree, isSugarFree, itemQuantity - 1);
+    // Find any cart item with this product and pack type to decrement
+    const cartItem = cart.items.find(
+      item => item.product.id === product.id && item.isPack === isPack
+    );
+    
+    if (cartItem) {
+      updateQuantity(
+        cartItem.product.id,
+        cartItem.isPack,
+        cartItem.isGlutenFree,
+        cartItem.isSugarFree,
+        cartItem.quantity - 1
+      );
+    }
   };
 
   const nextImage = () => {

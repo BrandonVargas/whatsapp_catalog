@@ -66,6 +66,7 @@ export const ProductManager = () => {
     productData.append('price', formData.price);
     productData.append('categoryId', formData.categoryId);
     productData.append('isPack', String(formData.isPack));
+    productData.append('packSize', formData.packSize);
     productData.append('packDiscount', formData.packDiscount);
     productData.append('glutenFreeAvailable', String(formData.glutenFreeAvailable));
     productData.append('sugarFreeAvailable', String(formData.glutenFreeAvailable));
@@ -308,6 +309,20 @@ export const ProductManager = () => {
                   </div>
 
                   <div className="form-group">
+                  <div className="form-group">
+                    <label htmlFor="packSize">Tamaño del Pack (unidades)</label>
+                    <input
+                      id="packSize"
+                      type="number"
+                      min="1"
+                      value={formData.packSize}
+                      onChange={(e) => setFormData({ ...formData, packSize: e.target.value })}
+                      placeholder="6"
+                      disabled={!formData.isPack}
+                    />
+                  </div>
+
+
                     <label htmlFor="packDiscount">Descuento Pack (%)</label>
                     <input
                       id="packDiscount"
