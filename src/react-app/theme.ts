@@ -1,19 +1,19 @@
 // Theme configuration
 export const theme = {
-  // Autumn color palette
+  // Light Autumn color palette
   colors: {
-    primary: '#D97706', // Amber-600
-    primaryHover: '#B45309', // Amber-700
-    secondary: '#DC2626', // Red-600
-    accent: '#92400E', // Amber-800
-    background: '#78350F', // Amber-900
-    surface: '#451A03', // Amber-950
-    text: '#FEF3C7', // Amber-100
-    textSecondary: '#FDE68A', // Amber-200
-    border: '#92400E', // Amber-800
-    success: '#16A34A', // Green-600
-    warning: '#EA580C', // Orange-600
-    error: '#DC2626', // Red-600
+    primary: '#EA580C', // Bright warm orange (pumpkin)
+    primaryHover: '#C2410C', // Deeper orange
+    secondary: '#DC2626', // Autumn red
+    accent: '#D97706', // Golden amber
+    background: '#FFF8F0', // Warm cream
+    surface: '#FFEDD5', // Light peach
+    text: '#451A03', // Dark brown
+    textSecondary: '#78350F', // Medium brown
+    border: '#FED7AA', // Light orange border
+    success: '#16A34A', // Green
+    warning: '#F59E0B', // Amber warning
+    error: '#DC2626', // Red
     whatsapp: '#25D366',
   },
   // Pricing configuration

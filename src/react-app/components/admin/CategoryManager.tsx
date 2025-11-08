@@ -10,6 +10,21 @@ export const CategoryManager = () => {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [formData, setFormData] = useState({ name: '', description: '' });
 
+  // Lock body scroll while modal open
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    if (isFormOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = original;
+    return () => { document.body.style.overflow = original; };
+  }, [isFormOpen]);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') resetForm(); };
+    if (isFormOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isFormOpen]);
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -26,11 +41,7 @@ export const CategoryManager = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const url = editingCategory
-      ? `/api/categories/${editingCategory.id}`
-      : '/api/categories';
-
+    const url = editingCategory ? `/api/categories/${editingCategory.id}` : '/api/categories';
     const method = editingCategory ? 'PUT' : 'POST';
 
     try {
@@ -52,15 +63,9 @@ export const CategoryManager = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar esta categoría?')) return;
-
     try {
-      const response = await fetch(`/api/categories/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        fetchCategories();
-      }
+      const response = await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+      if (response.ok) fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
       alert('Error al eliminar la categoría');
@@ -122,7 +127,7 @@ export const CategoryManager = () => {
 
       <AnimatePresence>
         {isFormOpen && (
-          <>
+          <div className="modal-root">
             <motion.div
               className="modal-overlay"
               initial={{ opacity: 0 }}
@@ -132,13 +137,16 @@ export const CategoryManager = () => {
             />
             <motion.div
               className="modal"
-              initial={{ opacity: 0, scale: 0.9 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="category-modal-title"
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              exit={{ opacity: 0, scale: 0.96 }}
             >
               <div className="modal-header">
-                <h3>{editingCategory ? 'Editar Categoría' : 'Nueva Categoría'}</h3>
-                <button onClick={resetForm} className="close-modal">
+                <h3 id="category-modal-title">{editingCategory ? 'Editar Categoría' : 'Nueva Categoría'}</h3>
+                <button onClick={resetForm} className="close-modal" aria-label="Cerrar">
                   <X size={24} />
                 </button>
               </div>
@@ -177,7 +185,7 @@ export const CategoryManager = () => {
                 </div>
               </form>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>

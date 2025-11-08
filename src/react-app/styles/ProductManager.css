@@ -1,3 +1,7 @@
+/* -------------------------------
+   Product Manager Styles
+----------------------------------*/
+
 .product-manager {
   padding: 2rem;
 }
@@ -13,13 +17,17 @@
   gap: 1.5rem;
   align-items: center;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: white;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(234, 88, 12, 0.1);
 }
 
 .product-row:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #FFFBF5;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 8px rgba(234, 88, 12, 0.15);
 }
 
 .product-image-thumb {
@@ -40,12 +48,13 @@
 }
 
 .no-image {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--color-border);
 }
 
 .product-details h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
+  color: var(--color-text);
 }
 
 .product-category {
@@ -57,7 +66,7 @@
 
 .product-desc {
   margin: 0 0 0.5rem 0;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -76,8 +85,8 @@
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  background: var(--color-border);
+  color: var(--color-text-secondary);
 }
 
 .mini-badge.pack {
@@ -104,29 +113,77 @@
   font-weight: 600;
 }
 
+/* -----------------------------------
+   Modal layout & overlay (final)
+-----------------------------------*/
 
-/* Modal base styles (shared with CategoryManager) */
-.modal {
+.modal-root {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--color-surface);
-  border-radius: 12px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  z-index: 101;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 16px;
 }
 
-.product-modal {
-  max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+  z-index: 100;
 }
+
+/* strong reset to override old fixed rules */
+.modal {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+
+  pointer-events: auto;
+  background: white;
+  border: 2px solid var(--color-primary);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(251, 146, 60, 0.2);
+
+  width: min(700px, 95vw);
+  max-height: min(90vh, 100dvh - 32px);
+  overflow: auto;
+  padding: 2rem;
+  z-index: 101;
+}
+
+.product-modal {}
+
+.modal-header {
+  position: sticky;
+  top: 0;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  background: inherit;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-modal {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+/* -----------------------------------
+   Form styling
+-----------------------------------*/
 
 .product-form {
   display: flex;
@@ -143,17 +200,17 @@
 .form-group select {
   padding: 0.75rem;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text);
   font-size: 1rem;
   font-family: inherit;
   cursor: pointer;
 }
 
 .form-group select option {
-  background: var(--color-surface);
-  color: white;
+  background: white;
+  color: var(--color-text);
 }
 
 .checkbox-group {
@@ -167,7 +224,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--color-text);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -180,6 +237,9 @@
   user-select: none;
 }
 
+/* -------------------------------
+   File input and preview
+----------------------------------*/
 .image-upload {
   position: relative;
 }
@@ -197,17 +257,17 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border: 2px dashed var(--color-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.8);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .file-label:hover {
   border-color: var(--color-primary);
-  background: rgba(100, 108, 255, 0.1);
+  background: #FFE4C4;
 }
 
 .image-previews {
@@ -230,6 +290,10 @@
   object-fit: cover;
 }
 
+/* -----------------------------------
+   Mobile responsiveness
+-----------------------------------*/
+
 @media (max-width: 768px) {
   .product-manager {
     padding: 1rem;
@@ -250,107 +314,125 @@
   }
 
   .product-actions {
-    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    /* space between the two buttons */
+    align-items: center;
     justify-content: flex-end;
+    /* aligns them nicely to the right of the card */
+  }
+
+  /* Make buttons a consistent size */
+  .product-actions button {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* Example color styles (adjust if you already have them elsewhere) */
+  .edit-button {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .delete-button {
+    background: var(--color-error);
+    color: white;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .edit-button:hover,
+  .delete-button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
   }
 
   .form-row {
     grid-template-columns: 1fr;
   }
 
-  
-/* Modal base styles (shared with CategoryManager) */
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--color-surface);
-  border-radius: 12px;
-  padding: 2rem;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  z-index: 101;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.product-modal {
-    max-height: 95vh;
+  .modal {
+    width: 100%;
+    padding: 1.25rem 1rem;
+    border-radius: 12px;
+    max-height: min(85vh, 100dvh - 32px);
   }
-}
 
-
-/* Responsive modal positioning */
-@media (max-height: 700px) {
-  .modal, .product-modal {
-    top: 5vh;
-    transform: translateX(-50%);
-    max-height: 90vh;
-  }
-}
-
-@media (max-width: 768px) {
-  .modal, .product-modal {
-    width: 95%;
-    padding: 1.5rem 1rem;
-    max-height: 85vh;
-  }
-  
   .image-previews {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 
-@media (prefers-color-scheme: light) {
+/* short screen landscape tweak */
+@media (max-height: 700px) {
+  .modal {
+    max-height: min(90vh, 100dvh - 24px);
+  }
+}
+
+/* -----------------------------------
+   Dark mode
+-----------------------------------*/
+
+@media (prefers-color-scheme: dark) {
+  .modal {
+    background: #44403C;
+    border-color: var(--color-primary);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(251, 146, 60, 0.3);
+  }
+
   .product-row {
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
   }
 
   .product-row:hover {
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .product-details h3 {
-    color: #213547;
+    color: var(--color-text);
   }
 
   .product-desc {
-    color: #666;
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .mini-badge {
-    background: #f0f0f0;
-    color: #666;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .form-group select {
-    border-color: #ddd;
-    background: #f9f9f9;
-    color: #213547;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text);
   }
 
   .form-group select option {
-    background: white;
-    color: #213547;
+    background: var(--color-surface);
+    color: var(--color-text);
   }
 
   .checkbox-label {
-    color: #213547;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .file-label {
-    border-color: #ddd;
-    background: #f9f9f9;
-    color: #666;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .file-label:hover {
     border-color: var(--color-primary);
-    background: rgba(100, 108, 255, 0.05);
+    background: rgba(251, 146, 60, 0.1);
   }
 }
-
-

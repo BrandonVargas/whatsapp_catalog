@@ -6,22 +6,22 @@
     line-height: 1.5;
     font-weight: 400;
 
-    /* Autumn Theme Colors */
-    --color-primary: #D97706;
-    --color-primary-hover: #B45309;
+    /* Light Autumn Theme Colors */
+    --color-primary: #EA580C;
+    --color-primary-hover: #C2410C;
     --color-secondary: #DC2626;
-    --color-accent: #92400E;
-    --color-background: #78350F;
-    --color-surface: #451A03;
-    --color-text: #FEF3C7;
-    --color-text-secondary: #FDE68A;
-    --color-border: #92400E;
+    --color-accent: #D97706;
+    --color-background: #FFF8F0;
+    --color-surface: #FFEDD5;
+    --color-text: #451A03;
+    --color-text-secondary: #78350F;
+    --color-border: #FED7AA;
     --color-success: #16A34A;
-    --color-warning: #EA580C;
+    --color-warning: #F59E0B;
     --color-error: #DC2626;
     --color-whatsapp: #25D366;
 
-    color-scheme: light dark;
+    color-scheme: light;
     color: var(--color-text);
     background-color: var(--color-background);
 
@@ -58,22 +58,23 @@
     line-height: 1.1;
   }
 
-  @media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: dark) {
     :root {
-      --color-primary: #D97706;
-      --color-primary-hover: #B45309;
-      --color-secondary: #DC2626;
-      --color-accent: #92400E;
-      --color-background: #FFFBEB;
-      --color-surface: #FEF3C7;
-      --color-text: #451A03;
-      --color-text-secondary: #78350F;
-      --color-border: #FDE68A;
-      --color-success: #16A34A;
-      --color-warning: #EA580C;
-      --color-error: #DC2626;
+      --color-primary: #FB923C;
+      --color-primary-hover: #F97316;
+      --color-secondary: #EF4444;
+      --color-accent: #FBBF24;
+      --color-background: #292524;
+      --color-surface: #44403C;
+      --color-text: #FFF8F0;
+      --color-text-secondary: #E7E5E4;
+      --color-border: #78716C;
+      --color-success: #22C55E;
+      --color-warning: #FB923C;
+      --color-error: #EF4444;
       --color-whatsapp: #25D366;
 
+      color-scheme: dark;
       color: var(--color-text);
       background-color: var(--color-background);
     }

@@ -23,6 +23,21 @@ export const ProductManager = () => {
     sugarFreeAvailable: false,
   });
 
+  // Lock body scroll while modal open
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    if (isFormOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = original;
+    return () => { document.body.style.overflow = original; };
+  }, [isFormOpen]);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') resetForm(); };
+    if (isFormOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isFormOpen]);
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
@@ -51,8 +66,6 @@ export const ProductManager = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImageFiles(files);
-
-    // Create previews
     const previews = files.map(file => URL.createObjectURL(file));
     setImagePreviews(previews);
   };
@@ -69,30 +82,22 @@ export const ProductManager = () => {
     productData.append('packSize', formData.packSize);
     productData.append('packDiscount', formData.packDiscount);
     productData.append('glutenFreeAvailable', String(formData.glutenFreeAvailable));
-    productData.append('sugarFreeAvailable', String(formData.glutenFreeAvailable));
+    // FIX: previously used glutenFreeAvailable twice
+    productData.append('sugarFreeAvailable', String(formData.sugarFreeAvailable));
 
-    // Add existing images if editing
     if (editingProduct && editingProduct.images) {
       productData.append('existingImages', JSON.stringify(editingProduct.images));
     }
 
-    // Add new image files
     imageFiles.forEach((file) => {
       productData.append('images', file);
     });
 
-    const url = editingProduct
-      ? `/api/products/${editingProduct.id}`
-      : '/api/products';
-
+    const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
     const method = editingProduct ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(url, {
-        method,
-        body: productData,
-      });
-
+      const response = await fetch(url, { method, body: productData });
       if (response.ok) {
         fetchProducts();
         resetForm();
@@ -108,15 +113,9 @@ export const ProductManager = () => {
 
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar este producto? Se eliminarán también sus imágenes.')) return;
-
     try {
-      const response = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        fetchProducts();
-      }
+      const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+      if (response.ok) fetchProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
       alert('Error al eliminar el producto');
@@ -148,7 +147,7 @@ export const ProductManager = () => {
       categoryId: '',
       isPack: false,
       packDiscount: '',
-    packSize: '',
+      packSize: '',
       glutenFreeAvailable: false,
       sugarFreeAvailable: false,
     });
@@ -229,7 +228,7 @@ export const ProductManager = () => {
 
       <AnimatePresence>
         {isFormOpen && (
-          <>
+          <div className="modal-root">
             <motion.div
               className="modal-overlay"
               initial={{ opacity: 0 }}
@@ -239,13 +238,16 @@ export const ProductManager = () => {
             />
             <motion.div
               className="modal product-modal"
-              initial={{ opacity: 0, scale: 0.9 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="product-modal-title"
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              exit={{ opacity: 0, scale: 0.96 }}
             >
               <div className="modal-header">
-                <h3>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</h3>
-                <button onClick={resetForm} className="close-modal">
+                <h3 id="product-modal-title">{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</h3>
+                <button onClick={resetForm} className="close-modal" aria-label="Cerrar">
                   <X size={24} />
                 </button>
               </div>
@@ -309,19 +311,18 @@ export const ProductManager = () => {
                   </div>
 
                   <div className="form-group">
-                  <div className="form-group">
-                    <label htmlFor="packSize">Tamaño del Pack (unidades)</label>
-                    <input
-                      id="packSize"
-                      type="number"
-                      min="1"
-                      value={formData.packSize}
-                      onChange={(e) => setFormData({ ...formData, packSize: e.target.value })}
-                      placeholder="6"
-                      disabled={!formData.isPack}
-                    />
-                  </div>
-
+                    <div className="form-group">
+                      <label htmlFor="packSize">Tamaño del Pack (unidades)</label>
+                      <input
+                        id="packSize"
+                        type="number"
+                        min="1"
+                        value={formData.packSize}
+                        onChange={(e) => setFormData({ ...formData, packSize: e.target.value })}
+                        placeholder="6"
+                        disabled={!formData.isPack}
+                      />
+                    </div>
 
                     <label htmlFor="packDiscount">Descuento Pack (%)</label>
                     <input
@@ -407,7 +408,7 @@ export const ProductManager = () => {
                 </div>
               </form>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>

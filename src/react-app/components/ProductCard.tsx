@@ -46,21 +46,21 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   const displayPrice = calculateDisplayPrice();
-  const originalPackPrice = isPack && product.isPack && product.packSize
-    ? product.price * product.packSize
-    : null;
+  const originalPackPrice =
+    isPack && product.isPack && product.packSize ? product.price * product.packSize : null;
 
   const handleAddToCart = () => {
     addToCart(product, isPack, isGlutenFree, isSugarFree);
   };
 
   const nextImage = () => {
-    setSelectedImage((prev) => (prev + 1) % product.images.length);
-  };
-
-  const prevImage = () => {
-    setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
-  };
+  if (!product.images?.length) return;
+  setSelectedImage((p) => (p + 1) % product.images.length);
+};
+const prevImage = () => {
+  if (!product.images?.length) return;
+  setSelectedImage((p) => (p - 1 + product.images.length) % product.images.length);
+};
 
   // Touch handlers for swipe gestures
   const onTouchStart = (e: React.TouchEvent) => {
@@ -79,12 +79,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe) {
-      nextImage();
-    }
-    if (isRightSwipe) {
-      prevImage();
-    }
+    if (isLeftSwipe) nextImage();
+    if (isRightSwipe) prevImage();
   };
 
   return (
@@ -105,7 +101,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <>
             <AnimatePresence mode="wait">
               <motion.img
-                key={selectedImage}
+                key={`hero-${product.id || 'noid'}-${selectedImage}`}
                 src={product.images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
@@ -139,16 +135,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 </motion.button>
 
                 <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                  {product.images.map((_, index) => (
+                  {product.images.map((src, index) => (
                     <motion.button
-                      key={index}
-                      className={`h-2 rounded-full border-none cursor-pointer p-0 transition-all ${
-                        index === selectedImage
+                      key={`dot-${product.id || 'noid'}-${index}`}
+                      className={`h-2 rounded-full border-none cursor-pointer p-0 transition-all ${index === selectedImage
                           ? 'w-6 bg-[var(--color-primary)]'
                           : 'w-2 bg-white/50'
-                      }`}
+                        }`}
                       onClick={() => setSelectedImage(index)}
-                      whileHover={{ backgroundColor: index === selectedImage ? undefined : 'rgba(255, 255, 255, 0.8)' }}
+                      whileHover={{
+                        backgroundColor:
+                          index === selectedImage ? undefined : 'rgba(255, 255, 255, 0.8)',
+                      }}
                       whileTap={{ scale: 0.9 }}
                       aria-label={`View image ${index + 1}`}
                     />
@@ -167,6 +165,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <AnimatePresence>
             {product.glutenFreeAvailable && (
               <motion.span
+                key={`badge-gluten-${product.id || 'noid'}`}
                 className="flex items-center justify-center w-8 h-8 rounded-full bg-white/95 shadow-md text-[var(--color-warning)]"
                 title="Gluten Free Available"
                 initial={{ scale: 0, rotate: -180 }}
@@ -179,7 +178,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             )}
             {product.sugarFreeAvailable && (
               <motion.span
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-white/95 shadow-md text-[var(--color-success)]"
+                key={`badge-sugar-${product.id || 'noid'}`}
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-white/95 shadow-md text-(--color-success)"
                 title="Sugar Free Available"
                 initial={{ scale: 0, rotate: 180 }}
                 animate={{ scale: 1, rotate: 0 }}
@@ -195,7 +195,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <div className="p-6 md:p-4 flex-1 flex flex-col gap-4">
         <motion.h3
-          className="text-2xl md:text-xl font-semibold text-[var(--color-text)] m-0"
+          className="text-2xl md:text-xl font-semibold text-(--color-text) m-0"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
@@ -204,7 +204,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         </motion.h3>
 
         <motion.p
-          className="text-sm text-[var(--color-text-secondary)] m-0 flex-1 leading-relaxed"
+          className="text-sm text-(--color-text-secondary) m-0 flex-1 leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -220,25 +220,37 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             transition={{ delay: 0.3 }}
           >
             <motion.button
-              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${
-                selectedType === 'unit'
-                  ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
+              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${selectedType === 'unit'
+                  ? 'bg-[var(--color-primary)] text-white border-(--color-primary)'
                   : 'bg-transparent text-[var(--color-text-secondary)] border-[var(--color-border)]'
-              }`}
+                }`}
               onClick={() => setSelectedType('unit')}
-              whileHover={selectedType !== 'unit' ? { backgroundColor: 'rgba(217, 119, 6, 0.1)', borderColor: 'var(--color-primary)' } : {}}
+              whileHover={
+                selectedType !== 'unit'
+                  ? {
+                    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                    borderColor: 'var(--color-primary)',
+                  }
+                  : {}
+              }
               whileTap={{ scale: 0.97 }}
             >
               Unidad
             </motion.button>
             <motion.button
-              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${
-                selectedType === 'pack'
+              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${selectedType === 'pack'
                   ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
                   : 'bg-transparent text-[var(--color-text-secondary)] border-[var(--color-border)]'
-              }`}
+                }`}
               onClick={() => setSelectedType('pack')}
-              whileHover={selectedType !== 'pack' ? { backgroundColor: 'rgba(217, 119, 6, 0.1)', borderColor: 'var(--color-primary)' } : {}}
+              whileHover={
+                selectedType !== 'pack'
+                  ? {
+                    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                    borderColor: 'var(--color-primary)',
+                  }
+                  : {}
+              }
               whileTap={{ scale: 0.97 }}
             >
               Pack x{product.packSize} {product.packDiscount && `(-${product.packDiscount}%)`}
@@ -265,7 +277,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 onChange={(e) => setIsGlutenFree(e.target.checked)}
                 className="w-[18px] h-[18px] cursor-pointer accent-[var(--color-primary)]"
               />
-              <span className="select-none">Sin Gluten (+${theme.pricing.glutenFreeUpcharge.toFixed(2)})</span>
+              <span className="select-none">
+                Sin Gluten (+${theme.pricing.glutenFreeUpcharge.toFixed(2)})
+              </span>
             </motion.label>
           )}
           {product.sugarFreeAvailable && (
@@ -280,7 +294,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 onChange={(e) => setIsSugarFree(e.target.checked)}
                 className="w-[18px] h-[18px] cursor-pointer accent-[var(--color-primary)]"
               />
-              <span className="select-none">Sin Azúcar (+${theme.pricing.sugarFreeUpcharge.toFixed(2)})</span>
+              <span className="select-none">
+                Sin Azúcar (+${theme.pricing.sugarFreeUpcharge.toFixed(2)})
+              </span>
             </motion.label>
           )}
         </motion.div>
@@ -293,10 +309,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             transition={{ delay: 0.5, type: 'spring', stiffness: 300 }}
           >
             <span className="text-xs text-[var(--color-text-secondary)]">Precio:</span>
-            <motion.span
-              className="text-2xl font-bold text-[var(--color-primary)]"
-              whileHover={{ scale: 1.05 }}
-            >
+            <motion.span className="text-2xl font-bold text-[var(--color-primary)]" whileHover={{ scale: 1.05 }}>
               ${displayPrice.toFixed(2)}
             </motion.span>
             {isPack && product.packDiscount && originalPackPrice && (
@@ -311,9 +324,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </motion.div>
 
           <motion.button
-            className={`flex items-center justify-center gap-2 text-white border-none py-3 px-6 rounded-lg font-semibold transition-all ${
-              itemQuantity > 0 ? 'bg-[var(--color-primary)] relative' : 'bg-[var(--color-primary)]'
-            } w-full md:w-auto`}
+            className={`flex items-center justify-center gap-2 text-white border-none py-3 px-6 rounded-lg font-semibold transition-all ${itemQuantity > 0 ? 'bg-[var(--color-primary)] relative' : 'bg-[var(--color-primary)]'
+              } w-full md:w-auto`}
             onClick={handleAddToCart}
             whileHover={{
               backgroundColor: 'var(--color-primary-hover)',

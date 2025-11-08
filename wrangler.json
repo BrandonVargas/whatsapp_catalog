@@ -1,29 +1,31 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "whatsapp-food-catalog",
-  "main": "./src/worker/index.ts",
-  "compatibility_date": "2025-10-08",
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": {
-    "enabled": true
-  },
-  "upload_source_maps": true,
-  "assets": {
-    "directory": "./dist/client",
-    "not_found_handling": "single-page-application"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "CATALOG_DB",
-      "id": "preview_id",
-      "preview_id": "preview_id"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "CATALOG_IMAGES",
-      "bucket_name": "catalog-images",
-      "preview_bucket_name": "catalog-images-preview"
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "whatsapp-food-catalog",
+	"main": "./src/worker/index.ts",
+	"compatibility_date": "2025-10-08",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"observability": {
+		"enabled": true
+	},
+	"upload_source_maps": true,
+	"assets": {
+		"directory": "./dist/client",
+		"not_found_handling": "single-page-application"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "CATALOG_DB",
+			"id": "80c220aaa57e482bb9e98c58f3c44304",
+			"remote": true
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "CATALOG_IMAGES",
+			"bucket_name": "catalog-images",
+      "remote": true
+		}
+	]
 }
