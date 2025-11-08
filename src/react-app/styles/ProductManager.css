@@ -104,6 +104,24 @@
   font-weight: 600;
 }
 
+
+/* Modal base styles (shared with CategoryManager) */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 101;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
 .product-modal {
   max-width: 700px;
   max-height: 90vh;
@@ -240,8 +258,48 @@
     grid-template-columns: 1fr;
   }
 
-  .product-modal {
+  
+/* Modal base styles (shared with CategoryManager) */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 101;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.product-modal {
     max-height: 95vh;
+  }
+}
+
+
+/* Responsive modal positioning */
+@media (max-height: 700px) {
+  .modal, .product-modal {
+    top: 5vh;
+    transform: translateX(-50%);
+    max-height: 90vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal, .product-modal {
+    width: 95%;
+    padding: 1.5rem 1rem;
+    max-height: 85vh;
+  }
+  
+  .image-previews {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 
@@ -295,25 +353,4 @@
   }
 }
 
-/* Improved mobile modal support */
-@media (max-width: 768px) {
-  .product-modal {
-    width: 95%;
-    max-height: 85vh;
-    padding: 1.5rem 1rem;
-  }
 
-  .image-previews {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  }
-}
-
-/* Ensure modal is scrollable on short screens */
-@media (max-height: 700px) {
-  .product-modal {
-    top: 20px;
-    bottom: 20px;
-    transform: translateX(-50%);
-    max-height: calc(100vh - 40px);
-  }
-}

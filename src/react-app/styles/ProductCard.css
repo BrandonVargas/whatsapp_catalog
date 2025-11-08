@@ -259,41 +259,27 @@
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
 }
 
-/* Quantity Controls */
-.quantity-control {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: var(--color-primary);
-  border-radius: 8px;
-  padding: 0.25rem;
-}
 
-.quantity-button {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
+/* Cart Quantity Badge */
+.cart-quantity-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--color-error);
   color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
-}
-
-.quantity-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.quantity-display {
-  min-width: 30px;
-  text-align: center;
+  font-size: 0.75rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: white;
+  border: 2px solid var(--color-surface);
+}
+
+.add-to-cart-button.in-cart {
+  position: relative;
 }
 
 /* Mobile Responsiveness */

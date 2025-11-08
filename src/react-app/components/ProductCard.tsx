@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Package, Leaf, Wheat, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
+import { ShoppingCart, Package, Leaf, Wheat, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { theme } from '../theme';
@@ -11,11 +11,16 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const { cart, addToCart, updateQuantity, getTotalItemQuantity } = useCart();
+  const { addToCart, getTotalItemQuantity } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedType, setSelectedType] = useState<'unit' | 'pack'>('unit');
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isSugarFree, setIsSugarFree] = useState(false);
+
+  // Touch support for carousel
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
 
   const isPack = selectedType === 'pack';
   const itemQuantity = getTotalItemQuantity(product.id, isPack);
@@ -50,34 +55,37 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     addToCart(product, isPack, isGlutenFree, isSugarFree);
   };
 
-  const handleIncrement = () => {
-    // Add one more with current dietary selection
-    addToCart(product, isPack, isGlutenFree, isSugarFree, 1);
-  };
-
-  const handleDecrement = () => {
-    // Find any cart item with this product and pack type to decrement
-    const cartItem = cart.items.find(
-      item => item.product.id === product.id && item.isPack === isPack
-    );
-    
-    if (cartItem) {
-      updateQuantity(
-        cartItem.product.id,
-        cartItem.isPack,
-        cartItem.isGlutenFree,
-        cartItem.isSugarFree,
-        cartItem.quantity - 1
-      );
-    }
-  };
-
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % product.images.length);
   };
 
   const prevImage = () => {
     setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+  };
+
+  // Touch handlers for swipe gestures
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextImage();
+    }
+    if (isRightSwipe) {
+      prevImage();
+    }
   };
 
   return (
@@ -88,7 +96,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="product-image-container">
+      <div
+        className="product-image-container"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         {product.images && product.images.length > 0 ? (
           <>
             <AnimatePresence mode="wait">
@@ -201,23 +214,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </div>
 
           {itemQuantity > 0 ? (
-            <div className="quantity-control">
-              <motion.button
-                className="quantity-button"
-                onClick={handleDecrement}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Minus size={18} />
-              </motion.button>
-              <span className="quantity-display">{itemQuantity}</span>
-              <motion.button
-                className="quantity-button"
-                onClick={handleIncrement}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Plus size={18} />
-              </motion.button>
-            </div>
+            <motion.button
+              className="add-to-cart-button in-cart"
+              onClick={handleAddToCart}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ShoppingCart size={20} />
+              Agregar
+              <span className="cart-quantity-badge">{itemQuantity}</span>
+            </motion.button>
           ) : (
             <motion.button
               className="add-to-cart-button"
