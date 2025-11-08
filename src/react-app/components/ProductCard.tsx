@@ -4,7 +4,6 @@ import { ShoppingCart, Package, Leaf, Wheat, ChevronLeft, ChevronRight } from 'l
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { theme } from '../theme';
-import '../styles/ProductCard.css';
 
 interface ProductCardProps {
   product: Product;
@@ -90,14 +89,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <motion.div
-      className="product-card"
+      className="bg-[var(--color-surface)] rounded-xl overflow-hidden shadow-lg border border-[var(--color-border)] flex flex-col"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -5, boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)' }}
       transition={{ duration: 0.3 }}
     >
       <div
-        className="product-image-container"
+        className="relative w-full h-64 md:h-60 overflow-hidden bg-black/30"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -109,29 +108,48 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 key={selectedImage}
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="product-image"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                className="w-full h-full object-cover"
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                whileHover={{ scale: 1.05 }}
               />
             </AnimatePresence>
 
             {product.images.length > 1 && (
               <>
-                <button className="carousel-button prev" onClick={prevImage} aria-label="Previous image">
-                  <ChevronLeft size={24} />
-                </button>
-                <button className="carousel-button next" onClick={nextImage} aria-label="Next image">
-                  <ChevronRight size={24} />
-                </button>
+                <motion.button
+                  className="absolute top-1/2 -translate-y-1/2 left-2 md:left-2.5 bg-black/60 text-white w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center z-10"
+                  onClick={prevImage}
+                  whileHover={{ scale: 1.15, backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={24} className="md:w-5 md:h-5" />
+                </motion.button>
+                <motion.button
+                  className="absolute top-1/2 -translate-y-1/2 right-2 md:right-2.5 bg-black/60 text-white w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center z-10"
+                  onClick={nextImage}
+                  whileHover={{ scale: 1.15, backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={24} className="md:w-5 md:h-5" />
+                </motion.button>
 
-                <div className="image-indicators">
+                <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                   {product.images.map((_, index) => (
-                    <button
+                    <motion.button
                       key={index}
-                      className={`indicator ${index === selectedImage ? 'active' : ''}`}
+                      className={`h-2 rounded-full border-none cursor-pointer p-0 transition-all ${
+                        index === selectedImage
+                          ? 'w-6 bg-[var(--color-primary)]'
+                          : 'w-2 bg-white/50'
+                      }`}
                       onClick={() => setSelectedImage(index)}
+                      whileHover={{ backgroundColor: index === selectedImage ? undefined : 'rgba(255, 255, 255, 0.8)' }}
+                      whileTap={{ scale: 0.9 }}
                       aria-label={`View image ${index + 1}`}
                     />
                   ))}
@@ -140,99 +158,189 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             )}
           </>
         ) : (
-          <div className="product-image-placeholder">
+          <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)] opacity-50">
             <Package size={48} />
           </div>
         )}
 
-        <div className="product-badges">
-          {product.glutenFreeAvailable && (
-            <span className="badge gluten-free" title="Gluten Free Available">
-              <Wheat size={16} />
-            </span>
-          )}
-          {product.sugarFreeAvailable && (
-            <span className="badge sugar-free" title="Sugar Free Available">
-              <Leaf size={16} />
-            </span>
-          )}
+        <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+          <AnimatePresence>
+            {product.glutenFreeAvailable && (
+              <motion.span
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-white/95 shadow-md text-[var(--color-warning)]"
+                title="Gluten Free Available"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                whileHover={{ scale: 1.15, rotate: 10 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+              >
+                <Wheat size={16} />
+              </motion.span>
+            )}
+            {product.sugarFreeAvailable && (
+              <motion.span
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-white/95 shadow-md text-[var(--color-success)]"
+                title="Sugar Free Available"
+                initial={{ scale: 0, rotate: 180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                whileHover={{ scale: 1.15, rotate: -10 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+              >
+                <Leaf size={16} />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
-      <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
-        <p className="product-description">{product.description}</p>
+      <div className="p-6 md:p-4 flex-1 flex flex-col gap-4">
+        <motion.h3
+          className="text-2xl md:text-xl font-semibold text-[var(--color-text)] m-0"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          {product.name}
+        </motion.h3>
+
+        <motion.p
+          className="text-sm text-[var(--color-text-secondary)] m-0 flex-1 leading-relaxed"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {product.description}
+        </motion.p>
 
         {product.isPack && (
-          <div className="product-type-selector">
-            <button
-              className={`type-button ${selectedType === 'unit' ? 'active' : ''}`}
+          <motion.div
+            className="flex gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.button
+              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${
+                selectedType === 'unit'
+                  ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
+                  : 'bg-transparent text-[var(--color-text-secondary)] border-[var(--color-border)]'
+              }`}
               onClick={() => setSelectedType('unit')}
+              whileHover={selectedType !== 'unit' ? { backgroundColor: 'rgba(217, 119, 6, 0.1)', borderColor: 'var(--color-primary)' } : {}}
+              whileTap={{ scale: 0.97 }}
             >
               Unidad
-            </button>
-            <button
-              className={`type-button ${selectedType === 'pack' ? 'active' : ''}`}
+            </motion.button>
+            <motion.button
+              className={`flex-1 py-2 px-3 rounded-lg border transition-all text-sm ${
+                selectedType === 'pack'
+                  ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
+                  : 'bg-transparent text-[var(--color-text-secondary)] border-[var(--color-border)]'
+              }`}
               onClick={() => setSelectedType('pack')}
+              whileHover={selectedType !== 'pack' ? { backgroundColor: 'rgba(217, 119, 6, 0.1)', borderColor: 'var(--color-primary)' } : {}}
+              whileTap={{ scale: 0.97 }}
             >
               Pack x{product.packSize} {product.packDiscount && `(-${product.packDiscount}%)`}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         )}
 
         {/* Dietary Options */}
-        <div className="dietary-options">
+        <motion.div
+          className="flex flex-col gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
           {product.glutenFreeAvailable && (
-            <label className="dietary-option">
+            <motion.label
+              className="flex items-center gap-2 cursor-pointer text-[var(--color-text-secondary)] text-sm"
+              whileHover={{ x: 2 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <input
                 type="checkbox"
                 checked={isGlutenFree}
                 onChange={(e) => setIsGlutenFree(e.target.checked)}
+                className="w-[18px] h-[18px] cursor-pointer accent-[var(--color-primary)]"
               />
-              <span>Sin Gluten (+${theme.pricing.glutenFreeUpcharge.toFixed(2)})</span>
-            </label>
+              <span className="select-none">Sin Gluten (+${theme.pricing.glutenFreeUpcharge.toFixed(2)})</span>
+            </motion.label>
           )}
           {product.sugarFreeAvailable && (
-            <label className="dietary-option">
+            <motion.label
+              className="flex items-center gap-2 cursor-pointer text-[var(--color-text-secondary)] text-sm"
+              whileHover={{ x: 2 }}
+              whileTap={{ scale: 0.98 }}
+            >
               <input
                 type="checkbox"
                 checked={isSugarFree}
                 onChange={(e) => setIsSugarFree(e.target.checked)}
+                className="w-[18px] h-[18px] cursor-pointer accent-[var(--color-primary)]"
               />
-              <span>Sin Azúcar (+${theme.pricing.sugarFreeUpcharge.toFixed(2)})</span>
-            </label>
+              <span className="select-none">Sin Azúcar (+${theme.pricing.sugarFreeUpcharge.toFixed(2)})</span>
+            </motion.label>
           )}
-        </div>
+        </motion.div>
 
-        <div className="product-footer">
-          <div className="product-price">
-            <span className="price-label">Precio:</span>
-            <span className="price-value">${displayPrice.toFixed(2)}</span>
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mt-auto">
+          <motion.div
+            className="flex flex-col gap-1"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, type: 'spring', stiffness: 300 }}
+          >
+            <span className="text-xs text-[var(--color-text-secondary)]">Precio:</span>
+            <motion.span
+              className="text-2xl font-bold text-[var(--color-primary)]"
+              whileHover={{ scale: 1.05 }}
+            >
+              ${displayPrice.toFixed(2)}
+            </motion.span>
             {isPack && product.packDiscount && originalPackPrice && (
-              <span className="price-original">${originalPackPrice.toFixed(2)}</span>
+              <motion.span
+                className="text-sm text-[var(--color-text-secondary)] line-through opacity-70"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.7 }}
+              >
+                ${originalPackPrice.toFixed(2)}
+              </motion.span>
             )}
-          </div>
+          </motion.div>
 
-          {itemQuantity > 0 ? (
-            <motion.button
-              className="add-to-cart-button in-cart"
-              onClick={handleAddToCart}
-              whileTap={{ scale: 0.95 }}
-            >
-              <ShoppingCart size={20} />
-              Agregar
-              <span className="cart-quantity-badge">{itemQuantity}</span>
-            </motion.button>
-          ) : (
-            <motion.button
-              className="add-to-cart-button"
-              onClick={handleAddToCart}
-              whileTap={{ scale: 0.95 }}
-            >
-              <ShoppingCart size={20} />
-              Agregar
-            </motion.button>
-          )}
+          <motion.button
+            className={`flex items-center justify-center gap-2 text-white border-none py-3 px-6 rounded-lg font-semibold transition-all ${
+              itemQuantity > 0 ? 'bg-[var(--color-primary)] relative' : 'bg-[var(--color-primary)]'
+            } w-full md:w-auto`}
+            onClick={handleAddToCart}
+            whileHover={{
+              backgroundColor: 'var(--color-primary-hover)',
+              y: -2,
+              boxShadow: '0 4px 12px rgba(217, 119, 6, 0.4)',
+            }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
+          >
+            <ShoppingCart size={20} />
+            Agregar
+            <AnimatePresence>
+              {itemQuantity > 0 && (
+                <motion.span
+                  className="absolute -top-2 -right-2 bg-[var(--color-error)] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-[var(--color-surface)]"
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  exit={{ scale: 0, rotate: 180 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                >
+                  {itemQuantity}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
       </div>
     </motion.div>
