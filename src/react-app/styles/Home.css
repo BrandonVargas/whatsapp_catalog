@@ -13,7 +13,7 @@
 .hero h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #646cff 0%, #bd34fe 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -52,9 +52,9 @@
 }
 
 .category-button.active {
-  background: #646cff;
+  background: var(--color-primary);
   color: white;
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
 
 .products-grid {

@@ -50,7 +50,7 @@
 
 .product-category {
   margin: 0 0 0.5rem 0;
-  color: #646cff;
+  color: var(--color-primary);
   font-size: 0.85rem;
   font-weight: 600;
 }
@@ -81,7 +81,7 @@
 }
 
 .mini-badge.pack {
-  background: #10b981;
+  background: var(--color-success);
   color: white;
 }
 
@@ -95,12 +95,12 @@
 .product-price-col .price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #646cff;
+  color: var(--color-primary);
 }
 
 .product-price-col .discount {
   font-size: 0.8rem;
-  color: #10b981;
+  color: var(--color-success);
   font-weight: 600;
 }
 
@@ -134,7 +134,7 @@
 }
 
 .form-group select option {
-  background: #1a1a1a;
+  background: var(--color-surface);
   color: white;
 }
 
@@ -188,7 +188,7 @@
 }
 
 .file-label:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
   background: rgba(100, 108, 255, 0.1);
 }
 
@@ -290,7 +290,7 @@
   }
 
   .file-label:hover {
-    border-color: #646cff;
+    border-color: var(--color-primary);
     background: rgba(100, 108, 255, 0.05);
   }
 }

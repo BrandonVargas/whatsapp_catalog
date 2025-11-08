@@ -18,8 +18,9 @@ export const ProductManager = () => {
     categoryId: '',
     isPack: false,
     packDiscount: '',
-    isGlutenFree: false,
-    isSugarFree: false,
+    packSize: '',
+    glutenFreeAvailable: false,
+    sugarFreeAvailable: false,
   });
 
   useEffect(() => {
@@ -66,8 +67,8 @@ export const ProductManager = () => {
     productData.append('categoryId', formData.categoryId);
     productData.append('isPack', String(formData.isPack));
     productData.append('packDiscount', formData.packDiscount);
-    productData.append('isGlutenFree', String(formData.isGlutenFree));
-    productData.append('isSugarFree', String(formData.isSugarFree));
+    productData.append('glutenFreeAvailable', String(formData.glutenFreeAvailable));
+    productData.append('sugarFreeAvailable', String(formData.glutenFreeAvailable));
 
     // Add existing images if editing
     if (editingProduct && editingProduct.images) {
@@ -130,8 +131,9 @@ export const ProductManager = () => {
       categoryId: product.categoryId,
       isPack: product.isPack || false,
       packDiscount: String(product.packDiscount || ''),
-      isGlutenFree: product.isGlutenFree,
-      isSugarFree: product.isSugarFree,
+      packSize: String(product.packSize || ''),
+      glutenFreeAvailable: product.glutenFreeAvailable,
+      sugarFreeAvailable: product.sugarFreeAvailable,
     });
     setImagePreviews(product.images || []);
     setIsFormOpen(true);
@@ -145,8 +147,9 @@ export const ProductManager = () => {
       categoryId: '',
       isPack: false,
       packDiscount: '',
-      isGlutenFree: false,
-      isSugarFree: false,
+    packSize: '',
+      glutenFreeAvailable: false,
+      sugarFreeAvailable: false,
     });
     setEditingProduct(null);
     setImageFiles([]);
@@ -198,8 +201,8 @@ export const ProductManager = () => {
               <p className="product-category">{getCategoryName(product.categoryId)}</p>
               <p className="product-desc">{product.description}</p>
               <div className="product-badges-list">
-                {product.isGlutenFree && <span className="mini-badge">Sin Gluten</span>}
-                {product.isSugarFree && <span className="mini-badge">Sin Azúcar</span>}
+                {product.glutenFreeAvailable && <span className="mini-badge">Sin Gluten</span>}
+                {product.sugarFreeAvailable && <span className="mini-badge">Sin Azúcar</span>}
                 {product.isPack && <span className="mini-badge pack">Pack</span>}
               </div>
             </div>
@@ -334,8 +337,8 @@ export const ProductManager = () => {
                     <label className="checkbox-label">
                       <input
                         type="checkbox"
-                        checked={formData.isGlutenFree}
-                        onChange={(e) => setFormData({ ...formData, isGlutenFree: e.target.checked })}
+                        checked={formData.glutenFreeAvailable}
+                        onChange={(e) => setFormData({ ...formData, glutenFreeAvailable: e.target.checked })}
                       />
                       <span>Sin gluten</span>
                     </label>
@@ -343,8 +346,8 @@ export const ProductManager = () => {
                     <label className="checkbox-label">
                       <input
                         type="checkbox"
-                        checked={formData.isSugarFree}
-                        onChange={(e) => setFormData({ ...formData, isSugarFree: e.target.checked })}
+                        checked={formData.sugarFreeAvailable}
+                        onChange={(e) => setFormData({ ...formData, sugarFreeAvailable: e.target.checked })}
                       />
                       <span>Sin azúcar</span>
                     </label>

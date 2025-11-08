@@ -106,7 +106,7 @@ export const Cart = () => {
                           <div className="quantity-controls">
                             <button
                               onClick={() =>
-                                updateQuantity(item.product.id, item.isPack, item.quantity - 1)
+                                updateQuantity(item.product.id, item.isPack, item.isGlutenFree, item.isSugarFree, item.quantity - 1)
                               }
                             >
                               <Minus size={16} />
@@ -114,7 +114,7 @@ export const Cart = () => {
                             <span>{item.quantity}</span>
                             <button
                               onClick={() =>
-                                updateQuantity(item.product.id, item.isPack, item.quantity + 1)
+                                updateQuantity(item.product.id, item.isPack, item.isGlutenFree, item.isSugarFree, item.quantity + 1)
                               }
                             >
                               <Plus size={16} />
@@ -127,7 +127,7 @@ export const Cart = () => {
                             ${(price * item.quantity).toFixed(2)}
                           </p>
                           <button
-                            onClick={() => removeFromCart(item.product.id, item.isPack)}
+                            onClick={() => removeFromCart(item.product.id, item.isPack, item.isGlutenFree, item.isSugarFree)}
                             className="remove-button"
                           >
                             <Trash2 size={18} />

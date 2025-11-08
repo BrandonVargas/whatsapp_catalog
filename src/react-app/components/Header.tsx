@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Store, Settings } from 'lucide-react';
+import { Store } from 'lucide-react';
 import '../styles/Header.css';
 
 export const Header = () => {
@@ -14,10 +14,6 @@ export const Header = () => {
         <nav className="nav">
           <Link to="/" className="nav-link">
             Catálogo
-          </Link>
-          <Link to="/admin" className="nav-link admin-link">
-            <Settings size={20} />
-            Admin
           </Link>
         </nav>
       </div>

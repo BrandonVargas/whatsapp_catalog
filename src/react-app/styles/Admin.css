@@ -1,3 +1,92 @@
+/* Admin Login */
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header svg {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text);
+}
+
+.login-header p {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.password-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.error-message {
+  color: var(--color-error);
+  font-size: 0.9rem;
+  margin: -0.5rem 0 0 0;
+  text-align: center;
+}
+
+.login-button {
+  padding: 0.875rem 2rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.login-button:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+}
+
+/* Admin Main */
 .admin {
   max-width: 1400px;
   margin: 0 auto;
@@ -13,19 +102,44 @@
 .admin-header h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  color: #f59e0b;
+  color: var(--color-primary);
 }
 
-.admin-header p {
-  color: rgba(255, 255, 255, 0.7);
+.admin-header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-header-actions p {
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
+  margin: 0;
+}
+
+.logout-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.logout-button:hover {
+  background: var(--color-error);
+  color: white;
+  border-color: var(--color-error);
 }
 
 .admin-tabs {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid var(--color-border);
   justify-content: center;
 }
 
@@ -37,7 +151,7 @@
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--color-text-secondary);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -46,12 +160,13 @@
 }
 
 .tab-button:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
+  background: rgba(217, 119, 6, 0.1);
 }
 
 .tab-button.active {
-  color: #f59e0b;
-  border-bottom-color: #f59e0b;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 .admin-content {
@@ -69,17 +184,38 @@
   }
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .admin {
     padding: 1rem;
+  }
+
+  .admin-login {
+    padding: 1rem;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-header h1 {
+    font-size: 1.5rem;
   }
 
   .admin-header h1 {
     font-size: 2rem;
   }
 
-  .admin-header p {
+  .admin-header-actions {
+    width: 100%;
+  }
+
+  .admin-header-actions p {
     font-size: 1rem;
+  }
+
+  .logout-button {
+    width: 100%;
   }
 
   .admin-tabs {
@@ -90,30 +226,19 @@
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
   }
-
-  .tab-button span {
-    display: none;
-  }
 }
 
+/* Light Mode */
 @media (prefers-color-scheme: light) {
-  .admin-header p {
-    color: #666;
+  .login-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  .admin-tabs {
-    border-bottom-color: #e5e5e5;
+  .password-input {
+    background: white;
   }
 
-  .tab-button {
-    color: #666;
-  }
-
-  .tab-button:hover {
-    color: #213547;
-  }
-
-  .tab-button.active {
-    color: #f59e0b;
+  .password-input:focus {
+    background: white;
   }
 }

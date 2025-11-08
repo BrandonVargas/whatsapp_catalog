@@ -3,9 +3,24 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Autumn Theme Colors */
+  --color-primary: #D97706;
+  --color-primary-hover: #B45309;
+  --color-secondary: #DC2626;
+  --color-accent: #92400E;
+  --color-background: #78350F;
+  --color-surface: #451A03;
+  --color-text: #FEF3C7;
+  --color-text-secondary: #FDE68A;
+  --color-border: #92400E;
+  --color-success: #16A34A;
+  --color-warning: #EA580C;
+  --color-error: #DC2626;
+  --color-whatsapp: #25D366;
+
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color-text);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,12 +42,12 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--color-primary-hover);
 }
 
 h1 {
@@ -47,13 +62,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-surface);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s;
+  color: var(--color-text);
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
 
 button:focus,
@@ -63,15 +79,25 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
+    --color-primary: #D97706;
+    --color-primary-hover: #B45309;
+    --color-secondary: #DC2626;
+    --color-accent: #92400E;
+    --color-background: #FFFBEB;
+    --color-surface: #FEF3C7;
+    --color-text: #451A03;
+    --color-text-secondary: #78350F;
+    --color-border: #FDE68A;
+    --color-success: #16A34A;
+    --color-warning: #EA580C;
+    --color-error: #DC2626;
+    --color-whatsapp: #25D366;
 
-  a:hover {
-    color: #747bff;
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
 
   button {
-    background-color: #f9f9f9;
+    background-color: var(--color-surface);
   }
 }

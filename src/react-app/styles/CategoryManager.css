@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #10b981;
+  background: var(--color-success);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -83,7 +83,7 @@
 }
 
 .edit-button {
-  background: #3b82f6;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .delete-button {
-  background: #ef4444;
+  background: var(--color-error);
   color: white;
 }
 
@@ -117,7 +117,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #1a1a1a;
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
@@ -186,7 +186,7 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: var(--color-primary);
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -222,7 +222,7 @@
 }
 
 .submit-button {
-  background: #646cff;
+  background: var(--color-primary);
   color: white;
 }
 

@@ -5,7 +5,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #646cff;
+  background: var(--color-primary);
   color: white;
   border: none;
   cursor: pointer;
@@ -20,7 +20,7 @@
   position: absolute;
   top: -5px;
   right: -5px;
-  background: #ef4444;
+  background: var(--color-error);
   color: white;
   border-radius: 50%;
   width: 24px;
@@ -49,7 +49,7 @@
   bottom: 0;
   width: 90%;
   max-width: 450px;
-  background: #1a1a1a;
+  background: var(--color-surface);
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
   z-index: 999;
   display: flex;
@@ -138,7 +138,7 @@
 }
 
 .cart-item-price {
-  color: #646cff;
+  color: var(--color-primary);
   font-weight: 600;
   margin: 0;
 }
@@ -184,14 +184,14 @@
 .cart-item-subtotal {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #646cff;
+  color: var(--color-primary);
   margin: 0;
 }
 
 .remove-button {
   background: none;
   border: none;
-  color: #ef4444;
+  color: var(--color-error);
   cursor: pointer;
   padding: 0.5rem;
   display: flex;
@@ -249,13 +249,13 @@
 
 .total-amount {
   font-size: 1.5rem;
-  color: #646cff;
+  color: var(--color-primary);
 }
 
 .checkout-button {
   width: 100%;
   padding: 1rem;
-  background: #25D366;
+  background: var(--color-whatsapp);
   color: white;
   border: none;
   border-radius: 8px;

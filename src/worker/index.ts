@@ -15,8 +15,9 @@ interface Product {
   categoryId: string;
   isPack?: boolean;
   packDiscount?: number;
-  isGlutenFree: boolean;
-  isSugarFree: boolean;
+  packSize?: number;
+  glutenFreeAvailable: boolean;
+  sugarFreeAvailable: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -199,8 +200,9 @@ app.post('/api/products', async (c) => {
       categoryId: formData.get('categoryId') as string,
       isPack: formData.get('isPack') === 'true',
       packDiscount: formData.get('packDiscount') ? parseFloat(formData.get('packDiscount') as string) : undefined,
-      isGlutenFree: formData.get('isGlutenFree') === 'true',
-      isSugarFree: formData.get('isSugarFree') === 'true',
+      packSize: formData.get('packSize') ? parseInt(formData.get('packSize') as string) : undefined,
+      glutenFreeAvailable: formData.get('glutenFreeAvailable') === 'true',
+      sugarFreeAvailable: formData.get('sugarFreeAvailable') === 'true',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -256,8 +258,8 @@ app.put('/api/products/:id', async (c) => {
     product.categoryId = formData.get('categoryId') as string;
     product.isPack = formData.get('isPack') === 'true';
     product.packDiscount = formData.get('packDiscount') ? parseFloat(formData.get('packDiscount') as string) : undefined;
-    product.isGlutenFree = formData.get('isGlutenFree') === 'true';
-    product.isSugarFree = formData.get('isSugarFree') === 'true';
+    product.glutenFreeAvailable = formData.get('isGlutenFree') === 'true';
+    product.sugarFreeAvailable = formData.get('isSugarFree') === 'true';
     product.updatedAt = new Date().toISOString();
 
     await c.env.CATALOG_DB.put(`product:${id}`, JSON.stringify(product));
